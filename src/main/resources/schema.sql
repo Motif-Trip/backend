@@ -3,11 +3,13 @@ DROP TABLE IF EXISTS `Members`;
 CREATE TABLE `Members`
 (
     `member_id`   BIGINT       NOT NULL,
-    `username`    VARCHAR(20)  NOT NULL,
-    `nickname`    VARCHAR(20)  NOT NULL,
-    `email`       VARCHAR(60)  NOT NULL,
-    `password`    VARCHAR(30)  NOT NULL,
-    `profile_img` VARCHAR(255) NULL
+    `username`    VARCHAR(30)  NOT NULL,
+    `nickname`    VARCHAR(30)  NOT NULL,
+    `email`       VARCHAR(100)  NOT NULL,
+    `password`    VARCHAR(255)  NOT NULL,
+    `profile_img` VARCHAR(255) NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `Schedules`;
@@ -21,18 +23,22 @@ CREATE TABLE `Schedules`
     `y_coordinate` DOUBLE      NOT NULL,
     `start_time`   TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `end_time`     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `color_code`   CHAR(7)     NOT NULL DEFAULT #000000,
-                                            `table_id` BIGINT NOT NULL
+    `color_code`   CHAR(7)     NOT NULL DEFAULT '#000000',
+    `timetable_id` BIGINT      NOT NULL,
+    `createdAt`    TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`   TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `TimeTables`;
 
 CREATE TABLE `TimeTables`
 (
-    `table_id`   BIGINT      NOT NULL,
-    `table_name` VARCHAR(20) NULL,
-    `date`       DATE        NOT NULL DEFAULT CURRENT_DATE,
-    `member_id`  BIGINT      NOT NULL
+    `timetable_id`   BIGINT      NOT NULL,
+    `timetable_name` VARCHAR(20) NULL,
+    `date`           TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `member_id`      BIGINT      NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `Posts`;
@@ -41,7 +47,9 @@ CREATE TABLE `Posts`
 (
     `post_id`   BIGINT NOT NULL,
     `contents`  TEXT   NOT NULL,
-    `member_id` BIGINT NOT NULL
+    `member_id` BIGINT NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `Comments`;
@@ -52,7 +60,9 @@ CREATE TABLE `Comments`
     `post_id`    BIGINT NOT NULL,
     `member_id`  BIGINT NOT NULL,
     `parents_id` BIGINT NULL,
-    `contents`   TEXT   NOT NULL
+    `contents`   TEXT   NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `Images`;
@@ -63,7 +73,9 @@ CREATE TABLE `Images`
     `post_id`       BIGINT       NOT NULL,
     `original_name` VARCHAR(255) NOT NULL,
     `stored_name`   VARCHAR(255) NOT NULL,
-    `image_url`     VARCHAR(255) NOT NULL
+    `image_url`     VARCHAR(255) NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `Likes`;
@@ -72,7 +84,9 @@ CREATE TABLE `Likes`
 (
     `like_id`   BIGINT NOT NULL,
     `post_id`   BIGINT NOT NULL,
-    `member_id` BIGINT NOT NULL
+    `member_id` BIGINT NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `Chat`;
@@ -83,7 +97,9 @@ CREATE TABLE `Chat`
     `message`     TEXT      NOT NULL,
     `send_time`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `chatroom_id` BIGINT    NOT NULL,
-    `member_id`   BIGINT    NOT NULL
+    `member_id`   BIGINT    NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `ChatRoom`;
@@ -92,7 +108,9 @@ CREATE TABLE `ChatRoom`
 (
     `chatroom_id`    BIGINT      NOT NULL,
     `chatroom_limit` INT         NOT NULL,
-    `chatroom_name`  VARCHAR(20) NULL DEFAULT 채팅방 + 채팅방ID
+    `chatroom_name`  VARCHAR(20) NOT NULL,
+    `createdAt`   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modifiedAt`  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 ALTER TABLE `Members`
@@ -107,7 +125,7 @@ ALTER TABLE `Schedules`
 
 ALTER TABLE `TimeTables`
     ADD CONSTRAINT `PK_TIMETABLES` PRIMARY KEY (
-                                                `table_id`
+                                                `timetable_id`
         );
 
 ALTER TABLE `Posts`
@@ -142,10 +160,10 @@ ALTER TABLE `ChatRoom`
 
 ALTER TABLE `Schedules`
     ADD CONSTRAINT `FK_TimeTables_TO_Schedules_1` FOREIGN KEY (
-                                                               `table_id`
+                                                               `timetable_id`
         )
         REFERENCES `TimeTables` (
-                                 `table_id`
+                                 `timetable_id`
             );
 
 ALTER TABLE `TimeTables`
