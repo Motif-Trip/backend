@@ -246,3 +246,5 @@ ALTER TABLE `Chat`
                               `member_id`
             );
 
+ALTER TABLE `Likes`
+    ADD UNIQUE INDEX `idx_member_post_unique` (`member_id`, `post_id`);
