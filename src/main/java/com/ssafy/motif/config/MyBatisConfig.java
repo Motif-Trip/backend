@@ -23,7 +23,7 @@ public class MyBatisConfig {
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean session = new SqlSessionFactoryBean();
         session.setDataSource(dataSource);
-        session.setMapperLocations(applicationContext.getResources("classpath:mappers/*.xml"));
+        session.setMapperLocations(applicationContext.getResources("classpath:mapper/*.xml"));
         session.setTypeAliasesPackage("com.ssafy.motif.app.domain");
         return session.getObject();
     }
