@@ -3,14 +3,32 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.motif.app.mapper.MemberMapper">
-  <!--  <resultMap id="member" type="Member">-->
-  <!--    <result column="member_id" property="memberId"/>-->
-  <!--    <result column="username" property="username"/>-->
-  <!--    <result column="nickname" property="nickname"/>-->
-  <!--    <result column="email" property="email"/>-->
-  <!--    <result column="password" property="password"/>-->
-  <!--    <result column="profile_img" property="profile_img"/>-->
-  <!--    <result column="createAt" property="createAt"/>-->
-  <!--    <result column="modifiedAt" property="modifiedAt"/>-->
-  <!--  </resultMap>-->
+
+  <resultMap id="member_response_dto" type="MemberResponseDto">
+    <result column="member_id" property="memberId"/>
+    <result column="email" property="email"/>
+    <result column="nickname" property="nickname"/>
+  </resultMap>
+
+  <select id="isEmailAlreadyInUse" resultType="boolean">
+    SELECT CASE
+             WHEN COUNT(*) > 0
+               THEN TRUE
+             ELSE FALSE
+             END
+    FROM Members
+    WHERE email = #{email}
+  </select>
+
+  <insert id="signup" parameterType="SignupRequestDto" useGeneratedKeys="true" keyProperty="memberId">
+    INSERT INTO Members (email, password, username, nickname)
+    VALUES (#{dto.email}, #{dto.password}, #{dto.username}, #{dto.nickname})
+  </insert>
+
+  <select id="findById" parameterType="Long" resultMap="member_response_dto">
+    SELECT member_id, email, nickname
+    FROM Members
+    WHERE member_id = #{memberId}
+  </select>
+
 </mapper>
