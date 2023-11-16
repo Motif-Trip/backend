@@ -4,10 +4,15 @@
 
 <mapper namespace="com.ssafy.motif.app.mapper.MemberMapper">
 
-  <resultMap id="member_response_dto" type="MemberResponseDto">
+  <resultMap id="Member_Response_Dto" type="MemberResponseDto">
     <result column="member_id" property="memberId"/>
     <result column="email" property="email"/>
     <result column="nickname" property="nickname"/>
+  </resultMap>
+
+  <resultMap id="Login_Response_Dto" type="LoginResponseDto">
+    <result column="email" property="email"/>
+    <result column="password" property="password"/>
   </resultMap>
 
   <select id="isEmailAlreadyInUse" resultType="boolean">
@@ -20,15 +25,21 @@
     WHERE email = #{email}
   </select>
 
-  <insert id="signup" parameterType="SignupRequestDto" useGeneratedKeys="true" keyProperty="memberId">
+  <insert id="signup" parameterType="SignupRequestDto" useGeneratedKeys="true"
+    keyProperty="memberId">
     INSERT INTO Members (email, password, username, nickname)
     VALUES (#{dto.email}, #{dto.password}, #{dto.username}, #{dto.nickname})
   </insert>
 
-  <select id="findById" parameterType="Long" resultMap="member_response_dto">
+  <select id="findById" resultMap="Member_Response_Dto">
     SELECT member_id, email, nickname
     FROM Members
     WHERE member_id = #{memberId}
   </select>
 
+  <select id="findByEmail" resultMap="Login_Response_Dto">
+    SELECT email, password
+    FROM Members
+    WHERE email = #{email};
+  </select>
 </mapper>
