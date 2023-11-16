@@ -1,7 +1,9 @@
 package com.ssafy.motif.app.mapper;
 
+import com.ssafy.motif.app.dto.member.LoginResponseDto;
 import com.ssafy.motif.app.dto.member.MemberResponseDto;
 import com.ssafy.motif.app.dto.member.SignupRequestDto;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,5 +14,7 @@ public interface MemberMapper {
 
     boolean isEmailAlreadyInUse(@Param("email") String email);
 
-    MemberResponseDto findById(Long memberId);
+    MemberResponseDto findById(@Param("memberId") Long memberId);
+
+    Optional<LoginResponseDto> findByEmail(@Param("email") String email);
 }
