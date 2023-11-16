@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/members")
+@RequestMapping("/api/v1/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/auth")
+    @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequestDto requestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signup(requestDto));
     }

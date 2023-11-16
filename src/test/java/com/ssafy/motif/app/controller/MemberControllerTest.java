@@ -47,7 +47,7 @@ class MemberControllerTest {
 
         //when
         final ResultActions result =
-            mvc.perform(post("/api/v1/members/auth")
+            mvc.perform(post("/api/v1/member/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(data))
                 .andDo(print());
@@ -57,28 +57,5 @@ class MemberControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.email").value(requestDto.getEmail()));
     }
-
-//    @Test
-//    @DisplayName("회원가입 - 실패(유효성 실패)")
-//    public void 회원가입2() throws Exception {
-//
-//        // given
-//        SignupRequestDto requestDto = new SignupRequestDto();
-//        requestDto.setEmail("test@test.com");
-//        requestDto.setPassword("123123");
-//        requestDto.setNickname("HongGilDong");
-//
-//        String data = mapper.writeValueAsString(requestDto);
-//
-//        //when
-//        mvc.perform(post("/api/v1/members/auth")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(data))
-//            .andDo(print())
-//            .andExpect(status().is5xxServerError())
-//            .andExpect(result -> assertTrue(
-//                result.getResolvedException() instanceof DataIntegrityViolationException));
-//    }
-
 
 }
