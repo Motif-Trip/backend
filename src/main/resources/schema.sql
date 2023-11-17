@@ -53,6 +53,12 @@ CREATE TABLE IF NOT EXISTS Posts
         FOREIGN KEY (member_id) REFERENCES Members (member_id) ON DELETE CASCADE
 );
 
+/*
+    게시물 제목 필드 추가.
+*/
+ALTER TABLE Posts
+    ADD title VARCHAR(100) NOT NULL;
+
 CREATE TABLE IF NOT EXISTS Comments
 (
     comment_id  bigint AUTO_INCREMENT
