@@ -1,7 +1,6 @@
 package com.ssafy.motif.app.mapper;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,7 +14,7 @@ public interface RefreshTokenMapper {
      * @param email (토큰 소유자)
      * @return (토큰 값)
      */
-    Optional<String> getRefreshTokenByEmail(
+    Optional<String> getTokenValue(
         @Param("email") String email
     );
 
@@ -43,7 +42,7 @@ public interface RefreshTokenMapper {
     void updateToken(
         @Param("value") String value,
         @Param("email") String email,
-        @Param("expirationAt") Date expirationAt
+        @Param("expirationAt") LocalDateTime expirationAt
     );
 
 }

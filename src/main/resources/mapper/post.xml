@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.ssafy.motif.app.mapper.PostMapper">
-	<resultMap type="Post" id="post">
-		<result column="post_id" property="postId" />
-		<result column="contents" property="contents" />
-		<result column="member_id" property="memberId" />
-	</resultMap>
-	<insert id="postWrite" parameterType="Post">
-		insert into posts(contents, member_id)
-		values(#{contents}, #{memberId})
-	</insert>
-	<select id="postList" resultMap="post">
-		select post_id, contents, member_id
-		from posts
-	</select>
-	<select id="postSelect" parameterType="Long" resultMap="post">
-		select post_id, contents, member_id
-		from posts
-		where post_id=#{postId}
-	</select>
-	<update id="postModify" parameterType="Post">
-		update posts
-		set contents=#{contents}
-		where post_id=#{postId}
-	</update>
-	<delete id="postDelete" parameterType="Long">
-		delete from posts
-		where post_id=#{postId}
-	</delete>
+  <resultMap type="PostRequestDto" id="requestDto">
+    <result column="post_id" property="postId"/>
+    <result column="contents" property="contents"/>
+    <result column="member_id" property="memberId"/>
+  </resultMap>
+
+  <insert id="save" useGeneratedKeys="true" keyProperty="dto.postId">
+    INSERT INTO Posts(title, contents, member_id)
+    VALUES (#{dto.title}, #{dto.contents}, #{memberId})
+  </insert>
+
+  <select id="postList" resultMap="requestDto">
+    SELECT post_id, contents, member_id
+    FROM posts
+  </select>
+
+  <select id="postSelect" parameterType="Long" resultMap="requestDto">
+    SELECT post_id, contents, member_id
+    FROM posts
+    WHERE post_id = #{postId}
+  </select>
+
+  <update id="postModify" parameterType="PostRequestDto">
+    UPDATE posts
+    SET contents=#{contents}
+    WHERE post_id = #{postId}
+  </update>
+
+  <delete id="postDelete" parameterType="Long">
+    DELETE
+    FROM posts
+    WHERE post_id = #{postId}
+  </delete>
 </mapper>

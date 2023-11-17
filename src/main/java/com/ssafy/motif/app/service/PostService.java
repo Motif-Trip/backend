@@ -1,14 +1,13 @@
 package com.ssafy.motif.app.service;
 
+import com.ssafy.motif.app.dto.post.PostRequestDto;
 import java.util.List;
 
-import com.ssafy.motif.app.dto.post.Post;
-
 public interface PostService {
-	void postWrite(Post post);
-	List<Post> postList();
-	Post postSelect(Long postId);
-	void postModify(Post post);
+	void create(PostRequestDto postRequestDto, String email);
+	List<PostRequestDto> postList();
+	PostRequestDto postSelect(Long postId);
+	void postModify(PostRequestDto postRequestDto);
 	void postDelete(Long postId);
 }
 
