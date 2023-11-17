@@ -1,16 +1,22 @@
 package com.ssafy.motif.app.mapper;
 
+import com.ssafy.motif.app.dto.post.PostRequestDto;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-
-import com.ssafy.motif.app.dto.post.Post;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PostMapper {
-	void postWrite(Post post);
-	List<Post> postList();
-	Post postSelect(Long postId);
-	void postModify(Post post);
+
+	/**
+	 * @param dto : 제목, 내용
+	 * @param memberId : 작성자 - 참조키
+	 */
+	void save(@Param("dto") PostRequestDto dto, @Param("memberId") Long memberId);
+
+	List<PostRequestDto> postList();
+	PostRequestDto postSelect(Long postId);
+	void postModify(PostRequestDto postRequestDto);
 	void postDelete(Long postId);
 }
