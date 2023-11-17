@@ -11,6 +11,7 @@
   </resultMap>
 
   <resultMap id="Login_Response_Dto" type="LoginResponseDto">
+    <result column="member_id" property="memberId"/>
     <result column="email" property="email"/>
     <result column="password" property="password"/>
   </resultMap>
@@ -38,7 +39,7 @@
   </select>
 
   <select id="findByEmail" resultMap="Login_Response_Dto">
-    SELECT email, password
+    SELECT member_id, email, password
     FROM Members
     WHERE email = #{email};
   </select>
