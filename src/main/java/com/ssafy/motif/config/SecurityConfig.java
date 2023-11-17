@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,19 @@ public class SecurityConfig {
     private final RefreshTokenMapper mapper;
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+            .antMatchers("/v3/api-docs")
+            .antMatchers("/swagger-resources/**")
+            .antMatchers("/swagger-ui/**")
+            .antMatchers("/webjars/**")
+            .antMatchers("/swagger/**")
+            .antMatchers("/api-docs/**")
+            .antMatchers("/swagger-ui/**")
+            ;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
 
         security
@@ -38,7 +52,11 @@ public class SecurityConfig {
 
         security
             .authorizeRequests()
-            .anyRequest().permitAll();
+            .antMatchers(
+                "/api/v1/member/signup",
+                "/api/v1/member/login"
+            ).permitAll()
+            .anyRequest().authenticated();
 
         security
             .addFilterBefore(new JwtFilter(JwtProvider, cookieUtil, mapper),
