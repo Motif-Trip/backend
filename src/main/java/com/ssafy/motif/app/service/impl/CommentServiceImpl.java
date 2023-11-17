@@ -32,15 +32,15 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void commentModify(Long postId) {
+	public void commentModify(Comment comment) {
 		// TODO Auto-generated method stub
-		commentMapper.commentModify(postId);
+		commentMapper.commentModify(comment);
 
 	}
 
 	@Override
-	public void commentDelete(Long postId) {
+	public void commentDelete(Long commentId) {
 		// TODO Auto-generated method stub
-		commentMapper.commentDelete(postId);
+		commentMapper.commentDelete(commentId);
 	}
 }

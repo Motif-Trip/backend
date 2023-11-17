@@ -45,9 +45,9 @@ public class CommentController {
 	}
 	
 	// 댓글 수정하기
-	@PutMapping("/modify/{commentId}")
-	public ResponseEntity<?> commentModify(@PathVariable Long commentId){
-		commentService.commentModify(commentId);
+	@PutMapping("/modify")
+	public ResponseEntity<?> commentModify(Comment comment){
+		commentService.commentModify(comment);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

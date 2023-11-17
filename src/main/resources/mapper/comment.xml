@@ -36,4 +36,9 @@
 		where comment_id=#{commentId}
 	</update>
 	
+	<delete id="commentDelete" parameterType="Long">
+		delete from comments
+		where comment_id=#{commentId}
+	</delete>
+	
 </mapper>

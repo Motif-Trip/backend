@@ -8,6 +8,6 @@ public interface CommentMapper {
 	void commentWrite(Comment comment);
 	void replyWrite(Comment comment);
 	List<Comment> commentList(Long postId);
-	void commentModify(Long postId);
-	void commentDelete(Long postId);
+	void commentModify(Comment comment);
+	void commentDelete(Long commentId);
 }
