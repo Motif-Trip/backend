@@ -11,6 +11,7 @@ import com.ssafy.motif.app.mapper.RefreshTokenMapper;
 import com.ssafy.motif.app.service.MemberService;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import com.ssafy.motif.app.util.jwt.JwtProvider;
+import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final JwtProvider JwtProvider;
+    private final JwtProvider jwtProvider;
     private final CookieUtil cookieUtil;
 
     private final PasswordEncoder encoder;
@@ -34,12 +35,19 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberResponseDto signup(SignupRequestDto requestDto) {
+
         /* 이메일 중복 조사 */
         validateEmail(requestDto);
+
         /* 비밀번호 암호화 */
         requestDto.setPassword(encoder.encode(requestDto.getPassword()));
+
         /* 회원가입 수행  */
         memberMapper.signup(requestDto);
+
+        /* Empty Refresh-Token 저장 */
+        refreshTokenMapper.createToken("", requestDto.getEmail(), LocalDateTime.now());
+
         /* MemberResponseDto 반환 */
         return memberMapper.findById(requestDto.getMemberId());
     }
@@ -55,26 +63,29 @@ public class MemberServiceImpl implements MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        TokenDto tokenDto = JwtProvider.generateTokenDto(member.getEmail());
+        TokenDto tokenDto = jwtProvider.generateTokenDto(member.getEmail());
+
         /* 쿠키에 액세스 토큰 추가 */
         cookieUtil.setCookie(
             "Access_Token",
             tokenDto.getAccessToken(),
-            JwtProvider.getAccessTokenTime(), response
+            jwtProvider.getAccessTokenTime(), response
         );
+        log.debug("========== 로그인 - New Access-Token");
 
         /* 쿠키에 리프레쉬 토큰 추가 */
         cookieUtil.setCookie(
             "Refresh_Token",
             tokenDto.getRefreshToken(),
-            JwtProvider.getRefreshTokenTime(), response
+            jwtProvider.getRefreshTokenTime(), response
         );
+        log.debug("========== 로그인 - New Refresh-Token");
 
         /* 리프레쉬 토큰 갱신 */
         refreshTokenMapper.updateToken(
-            member.getEmail(),
             tokenDto.getRefreshToken(),
-            JwtProvider.extractExpirationAt(tokenDto.getRefreshToken())
+            member.getEmail(),
+            LocalDateTime.now().plusSeconds(jwtProvider.getRefreshTokenTime())
         );
 
         /* 로그인 성공 */

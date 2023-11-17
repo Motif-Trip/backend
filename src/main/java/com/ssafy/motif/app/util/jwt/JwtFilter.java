@@ -4,6 +4,7 @@ import com.ssafy.motif.app.dto.jwt.TokenDto;
 import com.ssafy.motif.app.mapper.RefreshTokenMapper;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.servlet.FilterChain;
@@ -45,7 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
         /* 토큰 추출 */
         String accessToken = extractToken("Access_Token", request);
         String refreshToken = extractToken("Refresh_Token", request);
-        log.debug("accessToken : {} / refreshToken : {}", accessToken, refreshToken);
 
 
         /* (상황1) 토큰이 둘 다 존재, */
@@ -167,18 +167,19 @@ public class JwtFilter extends OncePerRequestFilter {
     @Transactional
     public void updateRefreshToken(String email, String refreshToken) {
         mapper.updateToken(
-            email,
             refreshToken,
-            jwtProvider.extractExpirationAt(refreshToken)
+            email,
+            LocalDateTime.now().plusSeconds(jwtProvider.getRefreshTokenTime())
         );
     }
 
     @Transactional(readOnly = true)
     public String getRefreshTokenOld(String email) {
-        return mapper.getRefreshTokenByEmail(email).orElseThrow(
+        return mapper.getTokenValue(email).orElseThrow(
             () -> new IllegalArgumentException("로그인 정보가 유효하지 않습니다.")
         );
     }
+
 
     private String extractToken(String tokenType, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

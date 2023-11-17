@@ -57,7 +57,7 @@ public class JwtProvider {
     private String createAccessToken(String email) {
         return Jwts.builder()
             .setSubject(email)
-            .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME))
+            .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000))
             .signWith(key)
             .compact();
     }
@@ -69,7 +69,7 @@ public class JwtProvider {
     private String createRefreshToken(String email) {
         return Jwts.builder()
             .setSubject(email)
-            .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_TIME))
+            .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_TIME * 1000))
             .signWith(key)
             .compact();
     }
@@ -83,7 +83,6 @@ public class JwtProvider {
                 .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
-            log.debug("========== 토큰 파싱 성공");
             return body;
         } catch (ExpiredJwtException e) {
             log.warn("========== 만료된 토큰 : {}", token);
@@ -99,7 +98,6 @@ public class JwtProvider {
         try {
             parseClaims(token);
         } catch (ExpiredJwtException e) {
-            log.warn("========== 만료된 토큰 : {}", token);
             return false;
         } catch (UnsupportedJwtException | MalformedJwtException e) {
             log.error("========== 잘못된 형식의 토큰 : {}", e.getMessage());
@@ -111,7 +109,7 @@ public class JwtProvider {
         return true;
     }
 
-    protected String extractEmail(String token) {
+    public String extractEmail(String token) {
         return parseClaims(token).getSubject();
     }
 
