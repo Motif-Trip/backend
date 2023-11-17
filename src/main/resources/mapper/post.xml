@@ -3,21 +3,20 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.ssafy.motif.app.mapper.PostMapper">
-	<resultMap type="Post" id="article">
+	<resultMap type="Post" id="post">
 		<result column="post_id" property="postId" />
 		<result column="contents" property="contents" />
 		<result column="member_id" property="memberId" />
 	</resultMap>
 	<insert id="postWrite" parameterType="Post">
-		insert into posts(contents)
-		values(#{contents})
-		where member_id=#{memberId}
+		insert into posts(contents, member_id)
+		values(#{contents}, #{memberId})
 	</insert>
-	<select id="postList" resultMap="article">
+	<select id="postList" resultMap="post">
 		select post_id, contents, member_id
 		from posts
 	</select>
-	<select id="postSelect" parameterType="Long" resultMap="article">
+	<select id="postSelect" parameterType="Long" resultMap="post">
 		select post_id, contents, member_id
 		from posts
 		where post_id=#{postId}
