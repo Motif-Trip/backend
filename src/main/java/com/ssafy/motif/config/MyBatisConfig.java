@@ -14,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @RequiredArgsConstructor
 @PropertySource("classpath:/application.yml")
-@MapperScan(basePackages = {"com.ssafy.motif.app.mapper"})
+@MapperScan(basePackages = {"com.ssafy.motif.app.domain.mapper"})
 public class MyBatisConfig {
 
     private final ApplicationContext applicationContext;
@@ -24,7 +24,7 @@ public class MyBatisConfig {
         SqlSessionFactoryBean session = new SqlSessionFactoryBean();
         session.setDataSource(dataSource);
         session.setMapperLocations(applicationContext.getResources("classpath:mapper/*.xml"));
-        session.setTypeAliasesPackage("com.ssafy.motif.app.dto.**");
+        session.setTypeAliasesPackage("com.ssafy.motif.app.domain.dto.**");
         return session.getObject();
     }
 

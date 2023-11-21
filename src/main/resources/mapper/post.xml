@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.motif.app.mapper.PostMapper">
+<mapper namespace="com.ssafy.motif.app.domain.mapper.PostMapper">
   <resultMap type="PostRequestDto" id="requestDto">
     <result column="post_id" property="postId"/>
     <result column="contents" property="contents"/>

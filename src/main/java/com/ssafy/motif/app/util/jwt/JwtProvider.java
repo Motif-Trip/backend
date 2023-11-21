@@ -1,6 +1,6 @@
 package com.ssafy.motif.app.util.jwt;
 
-import com.ssafy.motif.app.dto.jwt.TokenDto;
+import com.ssafy.motif.app.domain.dto.jwt.TokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

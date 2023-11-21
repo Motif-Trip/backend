@@ -3,7 +3,8 @@ package com.ssafy.motif.app.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ssafy.motif.app.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

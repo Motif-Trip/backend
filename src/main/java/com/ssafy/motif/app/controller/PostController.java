@@ -1,6 +1,8 @@
 package com.ssafy.motif.app.controller;
 
-import com.ssafy.motif.app.dto.post.PostRequestDto;
+import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
+import com.ssafy.motif.app.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

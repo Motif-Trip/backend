@@ -1,7 +1,9 @@
 package com.ssafy.motif.app.util.jwt;
 
-import com.ssafy.motif.app.dto.jwt.TokenDto;
-import com.ssafy.motif.app.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.code.ErrorCode;
+import com.ssafy.motif.app.domain.dto.jwt.TokenDto;
+import com.ssafy.motif.app.domain.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.exception.token.UnauthorizedAccessException;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import java.io.IOException;
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
 package com.ssafy.motif.config;
 
-import com.ssafy.motif.app.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.domain.mapper.RefreshTokenMapper;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import com.ssafy.motif.app.util.jwt.JwtFilter;
 import com.ssafy.motif.app.util.jwt.JwtProvider;
@@ -28,6 +28,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
+            .antMatchers("/v2/api-docs")
             .antMatchers("/v3/api-docs")
             .antMatchers("/swagger-resources/**")
             .antMatchers("/swagger-ui/**")
@@ -44,7 +45,7 @@ public class SecurityConfig {
         security
             .httpBasic().disable()
             .csrf().disable()
-            .cors();
+            .cors().disable();
 
         security
             .sessionManagement()
@@ -54,7 +55,8 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers(
                 "/api/v1/member/signup",
-                "/api/v1/member/login"
+                "/api/v1/member/login",
+                "/api/v1/data"
             ).permitAll()
             .anyRequest().authenticated();
 

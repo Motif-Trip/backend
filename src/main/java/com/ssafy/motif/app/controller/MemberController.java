@@ -1,7 +1,11 @@
 package com.ssafy.motif.app.controller;
 
-import com.ssafy.motif.app.dto.member.LoginRequestDto;
-import com.ssafy.motif.app.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.code.ApiResponse;
+import com.ssafy.motif.app.code.ResponseCode;
+import com.ssafy.motif.app.domain.dto.jwt.TokenDto;
+import com.ssafy.motif.app.domain.dto.member.LoginRequestDto;
+import com.ssafy.motif.app.domain.dto.member.MemberResponseDto;
+import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
 import com.ssafy.motif.app.service.MemberService;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

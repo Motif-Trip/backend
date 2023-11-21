@@ -1,4 +1,4 @@
-package com.ssafy.motif.app.dto.member;
+package com.ssafy.motif.app.domain.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +13,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignupRequestDto {
+public class LoginRequestDto {
 
-    private Long memberId;
     private String email;
     private String password;
-    private String username;
-    private String nickname;
 
 }

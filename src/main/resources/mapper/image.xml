@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.ssafy.motif.app.mapper.ImageMapper">
+<mapper namespace="com.ssafy.motif.app.domain.mapper.ImageMapper">
 	<resultMap type="ProfileImage" id="profilePic">
 		<result column="image_id" property="imageId" />
 		<result column="member_id" property="memberId" />

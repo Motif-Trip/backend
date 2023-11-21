@@ -1,4 +1,4 @@
-package com.ssafy.motif.app.dto.member;
+package com.ssafy.motif.app.domain.dto.member;
 
 import lombok.AccessLevel;
 import lombok.Getter;

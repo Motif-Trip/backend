@@ -1,4 +1,4 @@
-package com.ssafy.motif.app.dto.image;
+package com.ssafy.motif.app.domain.dto.image;
 
 import lombok.Builder;
 import lombok.Data;
