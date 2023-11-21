@@ -29,4 +29,12 @@
 		ON m.member_id=p.member_id
 		WHERE m.email=#{email}
 	</select>
+	
+	<delete id="profilePicRemove" parameterType="String">
+			DELETE
+			FROM profileimages p
+			INNER JOIN members m
+			ON p.member_id=p.member_id
+			WHERE m.email=#{email}
+	</delete>
 </mapper>
