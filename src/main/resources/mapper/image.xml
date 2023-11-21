@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.ssafy.app.mapper.ImageMapper">
+<mapper namespace="com.ssafy.motif.app.mapper.ImageMapper">
 	<resultMap type="ProfileImage" id="profilePic">
 		<result column="image_id" property="imageId" />
 		<result column="member_id" property="memberId" />
@@ -12,9 +12,21 @@
 	</resultMap>
 	
 	<insert id="profilePicAdd" parameterType="ProfileImage">
+		<selectKey order="BEFORE" keyProperty="memberId" resultType="Long">
+			select member_id
+			from members
+			where email=#{email}
+		</selectKey>
 		INSERT INTO profileimages(member_id, original_name,
 			stored_name, image_url)
 		VALUES(#{memberId}, #{originalName},
 			#{storedName}, #{imageUrl})
 	</insert>
+	
+	<select id="profilePicLoad" parameterType="String" resultMap="profilePic">
+		SELECT profileImageId, m.email, originalName, storedName, imageUrl
+		FROM profileimages p INNER JOIN members m
+		ON m.member_id=p.member_id
+		WHERE m.email=#{email}
+	</select>
 </mapper>
