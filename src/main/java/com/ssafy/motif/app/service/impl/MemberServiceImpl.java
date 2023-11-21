@@ -95,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
 
     private void validateEmail(SignupRequestDto requestDto) {
         if (memberMapper.isEmailAlreadyInUse(requestDto.getEmail())) {
-            throw new EmailDuplicateException("이미 사용 중인 이메일 주소입니다.");
+            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATE_ERROR);
         }
     }
 }

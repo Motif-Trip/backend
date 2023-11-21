@@ -39,8 +39,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         /* 회원가입 혹은 로그인은 필터 패스 */
         if (request.getRequestURI().equals("/api/v1/member/signup")
-            || request.getRequestURI().equals("/api/v1/member/login")) {
-
+            || request.getRequestURI().equals("/api/v1/member/login")
+            || request.getRequestURI().equals("/api/v1/data")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -122,8 +122,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } else {
-            throw new IllegalArgumentException("접근 권한이 없습니다.");
+            throw new UnauthorizedAccessException(ErrorCode.UNAUTHORIZED_ACCESS_ERROR);
         }
+
     }
 
     private static void verifyTokenMatch(String refreshToken, String refreshTokenOld) {
