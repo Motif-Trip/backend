@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.motif.app.domain.mapper.TimetableMapper">
+
+  <insert id="save" useGeneratedKeys="true" keyProperty="dto.timetableId">
+    INSERT INTO TimeTables(member_id, timetable_name, schedule_date)
+    VALUES (#{memberId}, #{dto.tableName}, #{dto.dateTime})
+  </insert>
+
+  <select id="getTimetableId" resultType="long">
+    SELECT timetable_id
+    FROM TimeTables
+    WHERE member_id = #{memberId}
+      AND DATE (schedule_date) =
+      CASE WHEN #{dateTime} IS NOT NULL THEN DATE (#{dateTime})
+      ELSE CURRENT_DATE
+    END
+  </select>
+
+</mapper>
