@@ -40,14 +40,14 @@ public class ImageServiceImpl implements ImageService{
 
 	@Override
 	public String profilePicAdd(@RequestParam MultipartFile file, String email) {
-		System.out.println("file:"+file);
+//		System.out.println("file:"+file);
 		
 		String storedName=UUID.randomUUID().toString()
 				+"_"+file.getOriginalFilename();
 		
 		// String path="classpath:static/images/profile/";
 		String imagePath=Paths.get(resources, "profile", storedName).toString();
-		log.debug("image path:"+imagePath);
+//		log.debug("image path:"+imagePath);
 		ProfileImage profilePic;
 		
 		profilePic = ProfileImage.builder()
@@ -129,6 +129,21 @@ public class ImageServiceImpl implements ImageService{
 		
 		// 이미지 로드 실패
 		return null;
+	}
+
+	@Override
+	public void profilePicRemove(String email) {
+		// TODO Auto-generated method stub
+		imageMapper.profilePicRemove(email);
+	}
+
+	@Override
+	public void profilePicUpdate(MultipartFile file, String email) {
+		// TODO Auto-generated method stub
+		// 원래 있었던 프사 데이터 제거 후
+		imageMapper.profilePicRemove(email);
+		// 프사 업로드
+		profilePicAdd(file, email);
 	}
 	
 	
