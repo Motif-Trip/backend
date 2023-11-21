@@ -3,3 +3,9 @@ spring:
     active: dev
     include:
       - secret
+      
+resources:
+  path: C:/SSAFY/upload/
+  
+upload:
+  path: /upload/**
