@@ -5,8 +5,13 @@ import java.awt.Image;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
-	String profilePicAdd(MultipartFile file, String email);
-	Image profilePicLoad(String email);
-	void profilePicUpdate(MultipartFile file, String email);
-	void profilePicRemove(String email);
+
+    String profilePicAdd(MultipartFile file, String email);
+
+    Image profilePicLoad(String email);
+
+    void profilePicUpdate(MultipartFile file, String email);
+
+    void profilePicRemove(String email);
+
 }
