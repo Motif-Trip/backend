@@ -1,7 +1,9 @@
 package com.ssafy.motif.app.util.jwt;
 
-import com.ssafy.motif.app.dto.jwt.TokenDto;
-import com.ssafy.motif.app.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.code.ErrorCode;
+import com.ssafy.motif.app.domain.dto.jwt.TokenDto;
+import com.ssafy.motif.app.domain.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.exception.token.UnauthorizedAccessException;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -37,8 +39,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         /* 회원가입 혹은 로그인은 필터 패스 */
         if (request.getRequestURI().equals("/api/v1/member/signup")
-            || request.getRequestURI().equals("/api/v1/member/login")) {
-
+            || request.getRequestURI().equals("/api/v1/member/login")
+            || request.getRequestURI().equals("/api/v1/data")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -120,8 +122,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } else {
-            throw new IllegalArgumentException("접근 권한이 없습니다.");
+            throw new UnauthorizedAccessException(ErrorCode.UNAUTHORIZED_ACCESS_ERROR);
         }
+
     }
 
     private static void verifyTokenMatch(String refreshToken, String refreshTokenOld) {

@@ -8,9 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.motif.app.dto.member.LoginRequestDto;
-import com.ssafy.motif.app.dto.member.SignupRequestDto;
-import com.ssafy.motif.app.mapper.MemberMapper;
+import com.ssafy.motif.app.domain.dto.member.LoginRequestDto;
+import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

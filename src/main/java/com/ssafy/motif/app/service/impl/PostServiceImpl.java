@@ -1,15 +1,14 @@
 package com.ssafy.motif.app.service.impl;
 
-import com.ssafy.motif.app.dto.member.LoginResponseDto;
-import com.ssafy.motif.app.dto.member.MemberResponseDto;
-import com.ssafy.motif.app.dto.post.PostRequestDto;
-import com.ssafy.motif.app.mapper.MemberMapper;
+import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
+import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
+import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.motif.app.mapper.PostMapper;
+import com.ssafy.motif.app.domain.mapper.PostMapper;
 import com.ssafy.motif.app.service.PostService;
 
 import lombok.RequiredArgsConstructor;

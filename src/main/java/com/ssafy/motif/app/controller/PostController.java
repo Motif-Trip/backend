@@ -1,6 +1,8 @@
 package com.ssafy.motif.app.controller;
 
-import com.ssafy.motif.app.dto.post.PostRequestDto;
+import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
+import com.ssafy.motif.app.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,10 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ssafy.motif.app.service.PostService;
-
-import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<?> create(
         @RequestBody PostRequestDto requestDto,
-        Authentication authentication
+        @ApiIgnore Authentication authentication
     ) {
         postService.create(requestDto, authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(requestDto);

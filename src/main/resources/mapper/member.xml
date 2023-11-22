@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.motif.app.mapper.MemberMapper">
+<mapper namespace="com.ssafy.motif.app.domain.mapper.MemberMapper">
 
   <resultMap id="Member_Response_Dto" type="MemberResponseDto">
     <result column="member_id" property="memberId"/>
@@ -43,4 +43,5 @@
     FROM Members
     WHERE email = #{email};
   </select>
+
 </mapper>

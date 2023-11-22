@@ -1,13 +1,14 @@
 package com.ssafy.motif.app.service.impl;
 
-import com.ssafy.motif.app.dto.jwt.TokenDto;
-import com.ssafy.motif.app.dto.member.LoginRequestDto;
-import com.ssafy.motif.app.dto.member.LoginResponseDto;
-import com.ssafy.motif.app.dto.member.MemberResponseDto;
-import com.ssafy.motif.app.dto.member.SignupRequestDto;
-import com.ssafy.motif.app.exception.EmailDuplicateException;
-import com.ssafy.motif.app.mapper.MemberMapper;
-import com.ssafy.motif.app.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.code.ErrorCode;
+import com.ssafy.motif.app.domain.dto.jwt.TokenDto;
+import com.ssafy.motif.app.domain.dto.member.LoginRequestDto;
+import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
+import com.ssafy.motif.app.domain.dto.member.MemberResponseDto;
+import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.exception.member.EmailDuplicateException;
+import com.ssafy.motif.app.domain.mapper.MemberMapper;
+import com.ssafy.motif.app.domain.mapper.RefreshTokenMapper;
 import com.ssafy.motif.app.service.MemberService;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import com.ssafy.motif.app.util.jwt.JwtProvider;
@@ -94,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
 
     private void validateEmail(SignupRequestDto requestDto) {
         if (memberMapper.isEmailAlreadyInUse(requestDto.getEmail())) {
-            throw new EmailDuplicateException("이미 사용 중인 이메일 주소입니다.");
+            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATE_ERROR);
         }
     }
 }

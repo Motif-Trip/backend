@@ -1,8 +1,8 @@
-package com.ssafy.motif.app.mapper;
+package com.ssafy.motif.app.domain.mapper;
 
-import com.ssafy.motif.app.dto.member.LoginResponseDto;
-import com.ssafy.motif.app.dto.member.MemberResponseDto;
-import com.ssafy.motif.app.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
+import com.ssafy.motif.app.domain.dto.member.MemberResponseDto;
+import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

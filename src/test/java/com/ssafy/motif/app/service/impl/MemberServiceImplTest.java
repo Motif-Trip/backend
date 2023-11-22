@@ -2,9 +2,9 @@ package com.ssafy.motif.app.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.ssafy.motif.app.dto.member.MemberResponseDto;
-import com.ssafy.motif.app.dto.member.SignupRequestDto;
-import com.ssafy.motif.app.exception.EmailDuplicateException;
+import com.ssafy.motif.app.domain.dto.member.MemberResponseDto;
+import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
+import com.ssafy.motif.app.exception.member.EmailDuplicateException;
 import com.ssafy.motif.app.service.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

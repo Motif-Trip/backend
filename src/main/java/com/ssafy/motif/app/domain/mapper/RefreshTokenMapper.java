@@ -1,4 +1,4 @@
-package com.ssafy.motif.app.mapper;
+package com.ssafy.motif.app.domain.mapper;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

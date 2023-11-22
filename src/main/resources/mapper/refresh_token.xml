@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.motif.app.mapper.RefreshTokenMapper">
+<mapper namespace="com.ssafy.motif.app.domain.mapper.RefreshTokenMapper">
   <select id="getTokenValue" resultType="String">
     SELECT token_value
     FROM RefreshTokens
