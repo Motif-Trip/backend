@@ -5,26 +5,34 @@
 <mapper namespace="com.ssafy.motif.app.domain.mapper.ScheduleMapper">
 
   <resultMap id="schedule" type="ScheduleResponseDto">
-    <result column="timetable_id" property="timetableId" />
-    <result column="schedule_id" property="scheduleId" />
-    <result column="name" property="name" />
-    <result column="category" property="category" />
-    <result column="latitude" property="lat" />
-    <result column="longitude" property="lng" />
-    <result column="start_time" property="startTime" />
-    <result column="end_time" property="endTime" />
-    <result column="color_code" property="colorCode" />
+    <result column="timetable_id" property="timetableId"/>
+    <result column="schedule_id" property="scheduleId"/>
+    <result column="name" property="name"/>
+    <result column="category" property="category"/>
+    <result column="latitude" property="lat"/>
+    <result column="longitude" property="lng"/>
+    <result column="start_time" property="startTime"/>
+    <result column="end_time" property="endTime"/>
+    <result column="color_code" property="colorCode"/>
   </resultMap>
 
   <insert id="save" useGeneratedKeys="true" keyProperty="dto.scheduleId">
     INSERT INTO Schedules(timetable_id, name, category, latitude, longitude, start_time, end_time,
                           color_code)
-    VALUES (#{timetable_id}, #{dto.name}, #{dto.category}, #{dto.lat}, #{dto.lng}, #{dto.startTime},
-            #{endTime}, #{colorCode});
+    VALUES (#{timetableId}, #{dto.name}, #{dto.category}, #{dto.lat}, #{dto.lng}, #{dto.startTime},
+            #{dto.endTime}, #{dto.colorCode});
   </insert>
 
   <select id="fetchItemByTimetableId" resultMap="schedule">
-    SELECT timetable_id, schedule_id, name, category, latitude, longitude, start_time, end_time, color_code
+    SELECT timetable_id,
+           schedule_id,
+           name,
+           category,
+           latitude,
+           longitude,
+           start_time,
+           end_time,
+           color_code
     FROM Schedules
     WHERE timetable_id = #{timetableId}
   </select>
