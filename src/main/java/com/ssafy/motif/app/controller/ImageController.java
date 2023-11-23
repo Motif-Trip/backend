@@ -19,8 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.motif.app.domain.dto.image.ProfileImage;
 import com.ssafy.motif.app.service.ImageService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Slf4j
 @RestController
@@ -31,7 +37,8 @@ public class ImageController {
 	
 	// 프사 등록
 	@PostMapping
-	public ResponseEntity<?> profilePicAdd(MultipartFile file, Authentication authentication){
+	@Operation(summary="프로필 사진 등록", description="image를 전송하면 external storage에 업로드")
+	public ResponseEntity<?> profilePicAdd(MultipartFile file, @ApiIgnore Authentication authentication){
 		// log.info(file.getOriginalFilename());
 		log.info(System.getProperty("user.dir"));
 		
@@ -47,18 +54,25 @@ public class ImageController {
 	}
 	
 	// 프사 수정
-		@PutMapping
-		public ResponseEntity<?> profilePicUpdate(MultipartFile file, Authentication authentication){
-			// log.info("수정하려는 사람 이메일:"+authentication.getName());
-			imageService.profilePicUpdate(file, authentication.getName());
-			
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		}
+	@PutMapping
+	@Operation(summary="프로필 사진 수정", description="수정할 이미지를 업로드하면 기존의 이미지가 대체됨")
+	public ResponseEntity<?> profilePicUpdate(MultipartFile file, @ApiIgnore Authentication authentication){
+		// log.info("수정하려는 사람 이메일:"+authentication.getName());
+		imageService.profilePicUpdate(file, authentication.getName());
+		
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
 	
 	
 	// 프사 불러오기
 	@GetMapping
-	public ResponseEntity<?> profilePicLoad(Authentication authentication){
+	@Operation(summary="프로필 사진 불러오기", description="email을 전송하면 업로드 되어있는 유저의 프로필 사진을 불러옴")
+	@ApiResponses(value= {
+			@ApiResponse(responseCode="200", description="프사 조회 성공",
+					content=@Content(schema=@Schema(type="string", format="binary"))),
+			@ApiResponse(responseCode="404", description="프사 없음")
+	})
+	public ResponseEntity<?> profilePicLoad(@ApiIgnore Authentication authentication){
 		ProfileImage loadPic=imageService.profilePicLoad(authentication.getName());
 		// 프사 실제 경로
 		String imagePath=loadPic.getImageUrl();
@@ -109,7 +123,8 @@ public class ImageController {
 	
 	// 프사 삭제하기
 	@DeleteMapping
-	public ResponseEntity<?> profilePicRemove(Authentication authentication){
+	@Operation(summary="프로필 사진 삭제", description="email을 전송하면 업로드 되어있는 유저의 프로필 사진을 삭제함")
+	public ResponseEntity<?> profilePicRemove(@ApiIgnore Authentication authentication){
 		imageService.profilePicRemove(authentication.getName());
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
