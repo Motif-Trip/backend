@@ -122,7 +122,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } else {
-            throw new UnauthorizedAccessException(ErrorCode.UNAUTHORIZED_ACCESS_ERROR);
+            throw new UnauthorizedAccessException(ErrorCode.UNAUTHORIZED_ACCESS);
         }
 
     }
