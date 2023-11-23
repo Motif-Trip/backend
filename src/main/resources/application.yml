@@ -8,8 +8,3 @@ spring:
     path-match:
       matching-strategy: ant_path_matcher
 
-resources:
-  path: C:/SSAFY/upload/
-  
-upload:
-  path: /upload/**
