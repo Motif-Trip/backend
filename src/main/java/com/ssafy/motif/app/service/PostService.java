@@ -1,15 +1,19 @@
 package com.ssafy.motif.app.service;
 
+import com.ssafy.motif.app.domain.dto.post.PagingResponse;
+import com.ssafy.motif.app.domain.dto.post.PostCreateRequestDto;
 import java.util.List;
 
-import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
-import com.ssafy.motif.app.domain.dto.post.PagingResponse;
-
 public interface PostService {
-	void create(PostRequestDto postRequestDto, String email);
-	List<PagingResponse> postPaging(int pageId, int size);
-	PostRequestDto postSelect(Long postId);
-	void postModify(PostRequestDto postRequestDto);
-	void postDelete(Long postId);
+
+    List<PagingResponse> postPaging(int pageId, int size);
+
+    void create(PostCreateRequestDto postCreateRequestDto, String email);
+
+    PostCreateRequestDto postSelect(Long postId);
+
+    void postModify(PostCreateRequestDto postCreateRequestDto);
+
+    void postDelete(Long postId);
 }
 
