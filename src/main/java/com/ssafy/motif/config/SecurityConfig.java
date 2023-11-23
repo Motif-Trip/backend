@@ -1,6 +1,7 @@
 package com.ssafy.motif.config;
 
 import com.ssafy.motif.app.domain.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.handler.TokenExceptionFilterHandler;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import com.ssafy.motif.app.util.jwt.JwtFilter;
 import com.ssafy.motif.app.util.jwt.JwtProvider;
@@ -24,18 +25,19 @@ public class SecurityConfig {
     private final CookieUtil cookieUtil;
     private final JwtProvider JwtProvider;
     private final RefreshTokenMapper mapper;
+    private final TokenExceptionFilterHandler tokenExceptionFilterHandler;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
             .antMatchers("/v2/api-docs")
             .antMatchers("/v3/api-docs")
-            .antMatchers("/swagger-resources/**")
             .antMatchers("/swagger-ui/**")
             .antMatchers("/webjars/**")
             .antMatchers("/swagger/**")
             .antMatchers("/api-docs/**")
             .antMatchers("/swagger-ui/**")
+            .antMatchers("/swagger-resources/**")
             ;
     }
 
@@ -61,6 +63,8 @@ public class SecurityConfig {
             .anyRequest().authenticated();
 
         security
+            .addFilterBefore(tokenExceptionFilterHandler,
+                UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new JwtFilter(JwtProvider, cookieUtil, mapper),
                 UsernamePasswordAuthenticationFilter.class);
 
