@@ -9,5 +9,5 @@ public interface TimetableService {
 
     Long save(TimetableCreateRequestDto requestDto, String email);
 
-    List<ScheduleResponseDto> getTableByDate(LocalDateTime dateTime, String email);
+    List<ScheduleResponseDto> getSchedulesTableByDate(LocalDateTime dateTime, String email);
 }

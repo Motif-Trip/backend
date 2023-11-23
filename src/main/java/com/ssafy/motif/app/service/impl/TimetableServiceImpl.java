@@ -30,7 +30,7 @@ public class TimetableServiceImpl implements TimetableService {
     public Long save(TimetableCreateRequestDto requestDto, String email) {
         LoginResponseDto loginInfo = getLoginResponseDto(email);
         if (timetableMapper.getTimetableId(loginInfo.getMemberId(), requestDto.getDateTime()) != null) {
-            throw new TimetableDeduplicationException(ErrorCode.TIMETABLE_DUPLICATE_ERROR);
+            throw new TimetableDeduplicationException(ErrorCode.TIMETABLE_DUPLICATE);
         }
 
         timetableMapper.save(loginInfo.getMemberId(), requestDto);
@@ -39,7 +39,7 @@ public class TimetableServiceImpl implements TimetableService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScheduleResponseDto> getTableByDate(@Nullable LocalDateTime dateTime, String email) {
+    public List<ScheduleResponseDto> getSchedulesTableByDate(@Nullable LocalDateTime dateTime, String email) {
         LoginResponseDto loginInfo = getLoginResponseDto(email);
         Long timetableId = timetableMapper.getTimetableId(loginInfo.getMemberId(), dateTime);
         return scheduleMapper.fetchItemByTimetableId(timetableId);
@@ -47,7 +47,7 @@ public class TimetableServiceImpl implements TimetableService {
 
     private LoginResponseDto getLoginResponseDto(String email) {
         LoginResponseDto loginInfo = memberMapper.findByEmail(email).orElseThrow(
-            () -> new NotFoundMemberException(ErrorCode.MEMBER_NOT_FOUND_BY_EMAIL)
+            () -> new NotFoundMemberException(ErrorCode.MEMBER_NOT_FOUND)
         );
         return loginInfo;
     }
