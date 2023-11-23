@@ -31,10 +31,11 @@ public class PostController {
         postService.create(requestDto, authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(requestDto);
     }
-
-    @GetMapping("/list")
-    public ResponseEntity<?> postList() {
-        return ResponseEntity.ok(postService.postList());
+    
+    @GetMapping("/paging/{pageId}")
+    public ResponseEntity<?> postPaging(@PathVariable int pageId){
+    	int size=20; // 페이징 사이즈
+    	return ResponseEntity.ok(postService.postPaging(pageId, size));
     }
 
     @GetMapping("/select/{postId}")

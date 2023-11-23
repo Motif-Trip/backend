@@ -8,15 +8,24 @@
     <result column="contents" property="contents"/>
     <result column="member_id" property="memberId"/>
   </resultMap>
+  
+  <resultMap type="PagingResponse" id="paging">
+    <result column="post_id" property="postId"/>
+    <result column="contents" property="contents"/>
+    <result column="member_id" property="memberId"/>
+    <result column="created_at" property="createdAt"/>
+  </resultMap>
 
   <insert id="save" useGeneratedKeys="true" keyProperty="dto.postId">
     INSERT INTO Posts(title, contents, member_id)
     VALUES (#{dto.title}, #{dto.contents}, #{memberId})
   </insert>
 
-  <select id="postList" resultMap="requestDto">
-    SELECT post_id, contents, member_id
-    FROM posts
+  <select id="postPaging" parameterType="PageRequest" resultMap="paging">
+    SELECT post_id, contents, member_id, created_at
+    FROM Posts
+    ORDER BY created_at DESC
+    LIMIT #{skip}, #{size}
   </select>
 
   <select id="postSelect" parameterType="Long" resultMap="requestDto">

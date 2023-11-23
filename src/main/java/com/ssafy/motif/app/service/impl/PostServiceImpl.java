@@ -1,17 +1,19 @@
 package com.ssafy.motif.app.service.impl;
 
-import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
-import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
-import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
+import com.ssafy.motif.app.domain.dto.post.PageRequest;
+import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
+import com.ssafy.motif.app.domain.dto.post.PagingResponse;
+import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import com.ssafy.motif.app.domain.mapper.PostMapper;
 import com.ssafy.motif.app.service.PostService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -35,8 +37,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostRequestDto> postList() {
-        return postMapper.postList();
+    public List<PagingResponse> postPaging(int pageId, int size) {
+    	PageRequest pReq=new PageRequest(pageId, size);
+    	log.info("paging request:"+pReq.toString());
+        return postMapper.postPaging(pReq);
     }
 
     @Override
