@@ -14,27 +14,27 @@
 	<insert id="profilePicAdd" parameterType="ProfileImage">
 		<selectKey order="BEFORE" keyProperty="memberId" resultType="Long">
 			select member_id
-			from members
+			from Members
 			where email=#{email}
 		</selectKey>
-		INSERT INTO profileimages(member_id, original_name,
+		INSERT INTO ProfileImages(member_id, original_name,
 			stored_name, image_url)
 		VALUES(#{memberId}, #{originalName},
 			#{storedName}, #{imageUrl})
 	</insert>
 	
 	<select id="profilePicLoad" parameterType="String" resultMap="profilePic">
-		SELECT profileImageId, m.email, originalName, storedName, imageUrl
-		FROM profileimages p INNER JOIN members m
+		SELECT profile_image_id, m.member_id, m.email, original_name, stored_name, image_url
+		FROM ProfileImages p INNER JOIN Members m
 		ON m.member_id=p.member_id
 		WHERE m.email=#{email}
 	</select>
 	
 	<delete id="profilePicRemove" parameterType="String">
-			DELETE
-			FROM profileimages p
-			INNER JOIN members m
-			ON p.member_id=p.member_id
-			WHERE m.email=#{email}
+			DELETE p
+			FROM ProfileImages p
+			INNER JOIN Members m
+			ON p.member_id=m.member_id
+			WHERE email=#{email}
 	</delete>
 </mapper>

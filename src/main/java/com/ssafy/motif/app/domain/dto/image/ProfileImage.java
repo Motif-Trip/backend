@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class ProfileImage {
 	private Long profileImageId;
+	private Long memberId;
 	private String email;
 	private String originalName;
 	private String storedName;
