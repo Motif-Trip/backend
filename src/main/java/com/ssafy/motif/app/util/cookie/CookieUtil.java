@@ -13,4 +13,12 @@ public class CookieUtil {
         cookie.setMaxAge(expiredTime);
         response.addCookie(cookie);
     }
+
+    public void removeCookie(String key, HttpServletResponse response) {
+        Cookie cookie = new Cookie(key, null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
 }

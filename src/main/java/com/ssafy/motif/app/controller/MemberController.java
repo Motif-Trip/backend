@@ -38,4 +38,10 @@ public class MemberController {
         return apiResponse.success(ResponseCode.LOGIN_SUCCESS.getMessage(), tokenDto);
     }
 
+    @GetMapping("/logout")
+    @Operation(summary = "로그아웃", description = "로그아웃 시, 토큰들 모두 삭제")
+    public ResponseEntity<?> logout(@ApiIgnore HttpServletResponse response) {
+        memberService.logout(response);
+        return apiResponse.success(ResponseCode.LOGOUT_SUCCESS.getMessage());
+    }
 }

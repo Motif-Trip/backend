@@ -11,4 +11,6 @@ public interface MemberService {
     MemberResponseDto signup(SignupRequestDto requestDto);
 
     TokenDto login(LoginRequestDto requestDto, HttpServletResponse response);
+
+    void logout(HttpServletResponse response);
 }

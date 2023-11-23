@@ -93,6 +93,13 @@ public class MemberServiceImpl implements MemberService {
         return tokenDto;
     }
 
+    @Override
+    public void logout(HttpServletResponse response) {
+        /* 토큰 모두 만료시간 0 */
+        cookieUtil.removeCookie("Access_Token", response);
+        cookieUtil.removeCookie("Refresh_Token", response);
+    }
+
     private void validateEmail(SignupRequestDto requestDto) {
         if (memberMapper.isEmailAlreadyInUse(requestDto.getEmail())) {
             throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATE_ERROR);
