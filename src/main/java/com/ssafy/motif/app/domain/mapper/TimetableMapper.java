@@ -17,4 +17,8 @@ public interface TimetableMapper {
         @Param("memberId") Long memberId,
         @Param("dateTime") LocalDateTime dateTime
     );
+
+    Long getTimetableIdByEmail(
+        @Param("email") String email
+    );
 }
