@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
 	// 실제 프사 저장 경로. 로컬
-	@Value("${resources.profile.path}")
+	@Value("${spring.servlet.multipart.location}")
 	private String resources;
 	
 	// upload=resources 간주

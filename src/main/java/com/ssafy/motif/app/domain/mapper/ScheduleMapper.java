@@ -10,10 +10,12 @@ import org.apache.ibatis.annotations.Param;
 public interface ScheduleMapper {
 
     /**
+     * @param timetableId   : 타임테이블 PK
      * @param requestDto    : 스케쥴 정보
      * @param loggedInEmail : 요청자 이메일
      */
     void save(
+        @Param("timetableId") Long timetableId,
         @Param("dto") ScheduleCreateRequestDto requestDto,
         @Param("email") String loggedInEmail);
 
