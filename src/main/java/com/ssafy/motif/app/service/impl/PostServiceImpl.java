@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
+import com.ssafy.motif.app.domain.dto.post.PostCreateRequestDto;
 import com.ssafy.motif.app.domain.dto.post.PageRequest;
-import com.ssafy.motif.app.domain.dto.post.PostRequestDto;
 import com.ssafy.motif.app.domain.dto.post.PagingResponse;
 import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import com.ssafy.motif.app.domain.mapper.PostMapper;
@@ -24,7 +24,7 @@ public class PostServiceImpl implements PostService {
     private final MemberMapper memberMapper;
 
     @Override
-    public void create(PostRequestDto requestDto, String email) {
+    public void create(PostCreateRequestDto requestDto, String email) {
         /* 이메일을 통해 회원 ID 조회 */
         Long memberId = memberMapper.findByEmail(email)
             .map(LoginResponseDto::getMemberId)
@@ -38,21 +38,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PagingResponse> postPaging(int pageId, int size) {
-    	PageRequest pReq=new PageRequest(pageId, size);
-    	log.info("paging request:"+pReq.toString());
+        PageRequest pReq = new PageRequest(pageId, size);
+        log.info("paging request:" + pReq.toString());
         return postMapper.postPaging(pReq);
     }
 
     @Override
-    public PostRequestDto postSelect(Long postId) {
+    public PostCreateRequestDto postSelect(Long postId) {
         // TODO Auto-generated method stub
         return postMapper.postSelect(postId);
     }
 
     @Override
-    public void postModify(PostRequestDto postRequestDto) {
+    public void postModify(PostCreateRequestDto postCreateRequestDto) {
         // TODO Auto-generated method stub
-        postMapper.postModify(postRequestDto);
+        postMapper.postModify(postCreateRequestDto);
 
     }
 

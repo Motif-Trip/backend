@@ -28,8 +28,8 @@
 
   <insert id="signup" parameterType="SignupRequestDto" useGeneratedKeys="true"
     keyProperty="memberId">
-    INSERT INTO Members (email, password, username, nickname)
-    VALUES (#{dto.email}, #{dto.password}, #{dto.username}, #{dto.nickname})
+    INSERT INTO Members (email, password, nickname)
+    VALUES (#{dto.email}, #{dto.password}, #{dto.nickname})
   </insert>
 
   <select id="findById" resultMap="Member_Response_Dto">

@@ -9,6 +9,8 @@ import com.ssafy.motif.app.domain.dto.member.SignupRequestDto;
 import com.ssafy.motif.app.exception.member.EmailDuplicateException;
 import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import com.ssafy.motif.app.domain.mapper.RefreshTokenMapper;
+import com.ssafy.motif.app.exception.member.NotFoundMemberException;
+import com.ssafy.motif.app.exception.member.PasswordMismatchException;
 import com.ssafy.motif.app.service.MemberService;
 import com.ssafy.motif.app.util.cookie.CookieUtil;
 import com.ssafy.motif.app.util.jwt.JwtProvider;
@@ -45,9 +47,11 @@ public class MemberServiceImpl implements MemberService {
 
         /* 회원가입 수행  */
         memberMapper.signup(requestDto);
+        log.debug("회원가입 성공");
 
         /* Empty Refresh-Token 저장 */
         refreshTokenMapper.createToken("", requestDto.getEmail(), LocalDateTime.now());
+        log.debug("빈 리프레쉬 토큰 저장");
 
         /* MemberResponseDto 반환 */
         return memberMapper.findById(requestDto.getMemberId());
@@ -57,11 +61,11 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public TokenDto login(LoginRequestDto requestDto, HttpServletResponse response) {
         LoginResponseDto member = memberMapper.findByEmail(requestDto.getEmail()).orElseThrow(
-            () -> new IllegalArgumentException(requestDto.getEmail() + "= 존재하지 않는 회원입니다.")
+            () -> new NotFoundMemberException(ErrorCode.MEMBER_NOT_FOUND)
         );
 
         if (!encoder.matches(requestDto.getPassword(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordMismatchException(ErrorCode.PASSWORD_MISS_MATCH);
         }
 
         TokenDto tokenDto = jwtProvider.generateTokenDto(member.getEmail());
@@ -93,9 +97,16 @@ public class MemberServiceImpl implements MemberService {
         return tokenDto;
     }
 
+    @Override
+    public void logout(HttpServletResponse response) {
+        /* 토큰 모두 만료시간 0 */
+        cookieUtil.removeCookie("Access_Token", response);
+        cookieUtil.removeCookie("Refresh_Token", response);
+    }
+
     private void validateEmail(SignupRequestDto requestDto) {
         if (memberMapper.isEmailAlreadyInUse(requestDto.getEmail())) {
-            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATE_ERROR);
+            throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATE);
         }
     }
 }

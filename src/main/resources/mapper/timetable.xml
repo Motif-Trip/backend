@@ -19,4 +19,10 @@
     END
   </select>
 
+  <select id="getTimetableIdByEmail" resultType="long">
+    SELECT timetable_id
+    FROM TimeTables
+    WHERE email = #{email} AND DATE (schedule_date) = CURRENT_DATE
+  </select>
+
 </mapper>

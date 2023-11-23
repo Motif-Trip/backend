@@ -37,7 +37,7 @@ public class TimetableController {
     public ResponseEntity<?> getSchedules(
         @RequestParam(required = false) @Nullable LocalDateTime dateTime,
         @ApiIgnore Authentication authentication) {
-        List<ScheduleResponseDto> list = timeTableService.getTableByDate(dateTime,
+        List<ScheduleResponseDto> list = timeTableService.getSchedulesTableByDate(dateTime,
             authentication.getName());
         return apiResponse.success(dateTime == null ? "오늘 여행 스케쥴" : printScheduleDay(dateTime),
             list);
@@ -56,11 +56,11 @@ public class TimetableController {
     @PostMapping("/schedule")
     @Operation(summary = "스케쥴 추가", description = "타임테이블에 들어갈 여행 스케쥴 추가")
     public ResponseEntity<?> add(
-        @RequestBody final ScheduleCreateRequestDto requestDto,
+        @RequestBody ScheduleCreateRequestDto requestDto,
         @ApiIgnore Authentication authentication) {
         /* 스케쥴 새로 저장*/
         scheduleService.create(requestDto, authentication.getName());
-        return apiResponse.success("스케쥴 추가 성공", requestDto);
+        return apiResponse.success("스케쥴 추가 성공", requestDto.getScheduleId());
     }
 
     private static String printScheduleDay(LocalDateTime dateTime) {

@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         log.debug("요청 URL : {}", request.getRequestURI());
 
-        /* 회원가입 혹은 로그인은 필터 패스 */
+        /* 토큰 필터 패스 */
         if (request.getRequestURI().equals("/api/v1/member/signup")
             || request.getRequestURI().equals("/api/v1/member/login")
             || request.getRequestURI().equals("/api/v1/data")) {
@@ -122,7 +122,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } else {
-            throw new UnauthorizedAccessException(ErrorCode.UNAUTHORIZED_ACCESS_ERROR);
+            throw new UnauthorizedAccessException(ErrorCode.UNAUTHORIZED_ACCESS);
         }
 
     }

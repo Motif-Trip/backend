@@ -177,3 +177,27 @@ CREATE TABLE RefreshTokens
         FOREIGN KEY (email) REFERENCES Members (email)
             ON DELETE CASCADE
 );
+
+
+DROP TABLE IF EXISTS `ProfileImages`;
+CREATE TABLE `ProfileImages`
+(
+    `profile_image_id` BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `member_id`        BIGINT       NOT NULL,
+    `original_name`    VARCHAR(255) NOT NULL,
+    `stored_name`      VARCHAR(255) NOT NULL,
+    `image_url`        VARCHAR(255) NOT NULL,
+    is_deleted         tinyint(1)   NOT NULL DEFAULT 0,
+    `created_at`       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified_at`      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES `Members` (member_id)
+);
+
+ALTER TABLE TimeTables
+    ADD COLUMN email VARCHAR(255);
+
+ALTER TABLE TimeTables
+    ADD CONSTRAINT fk_member_email
+        FOREIGN KEY (email)
+            REFERENCES Members(email);
+

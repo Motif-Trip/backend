@@ -8,7 +8,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +16,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @ApiIgnore
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/data")
 public class DataController {
 
