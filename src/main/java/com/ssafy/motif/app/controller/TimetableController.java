@@ -34,13 +34,9 @@ public class TimetableController {
 
     @GetMapping
     @Operation(summary = "스케쥴 불러오기", description = "날짜에 따라서 여행 스케쥴 불러오기 (default: 오늘 스케쥴)")
-    public ResponseEntity<?> getSchedules(
-        @RequestParam(required = false) @Nullable LocalDateTime dateTime,
-        @ApiIgnore Authentication authentication) {
-        List<ScheduleResponseDto> list = timeTableService.getSchedulesTableByDate(dateTime,
-            authentication.getName());
-        return apiResponse.success(dateTime == null ? "오늘 여행 스케쥴" : printScheduleDay(dateTime),
-            list);
+    public ResponseEntity<?> getSchedules(@ApiIgnore Authentication authentication) {
+        List<ScheduleResponseDto> list = timeTableService.getSchedulesTableByDate(authentication.getName());
+        return apiResponse.success("오늘의 여행", list);
     }
 
     @PostMapping
