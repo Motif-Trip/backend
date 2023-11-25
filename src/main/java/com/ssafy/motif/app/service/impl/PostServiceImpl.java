@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.motif.app.domain.dto.member.LoginResponseDto;
 import com.ssafy.motif.app.domain.dto.post.PostCreateRequestDto;
 import com.ssafy.motif.app.domain.dto.post.PageRequest;
-import com.ssafy.motif.app.domain.dto.post.PagingResponse;
+import com.ssafy.motif.app.domain.dto.post.PostResponseDto;
 import com.ssafy.motif.app.domain.mapper.MemberMapper;
 import com.ssafy.motif.app.domain.mapper.PostMapper;
 import com.ssafy.motif.app.service.PostService;
@@ -37,10 +37,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PagingResponse> postPaging(int pageId, int size) {
-        PageRequest pReq = new PageRequest(pageId, size);
-        log.info("paging request:" + pReq.toString());
-        return postMapper.postPaging(pReq);
+    public List<PostResponseDto> getList(int page, String email) {
+        return postMapper.fetchPostList(new PageRequest(page, 20), email);
     }
 
     @Override
