@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.motif.app.domain.mapper.RefreshTokenMapper">
+  <select id="getTokenValue" resultType="String">
+    SELECT token_value
+    FROM RefreshTokens
+    WHERE email = #{email}
+  </select>
+
+  <insert id="createToken">
+    INSERT INTO RefreshTokens(token_value, email, expiration_at)
+    VALUES (#{value}, #{email}, #{expirationAt});
+  </insert>
+
+  <update id="updateToken">
+    UPDATE RefreshTokens
+    SET token_value   = #{value},
+        expiration_at = #{expirationAt}
+    WHERE email = #{email}
+  </update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.motif.app.domain.mapper.MemberMapper">
+
+  <resultMap id="Member_Response_Dto" type="MemberResponseDto">
+    <result column="member_id" property="memberId"/>
+    <result column="email" property="email"/>
+    <result column="nickname" property="nickname"/>
+  </resultMap>
+
+  <resultMap id="Login_Response_Dto" type="LoginResponseDto">
+    <result column="member_id" property="memberId"/>
+    <result column="email" property="email"/>
+    <result column="password" property="password"/>
+  </resultMap>
+
+  <select id="isEmailAlreadyInUse" resultType="boolean">
+    SELECT CASE
+             WHEN COUNT(*) > 0
+               THEN TRUE
+             ELSE FALSE
+             END
+    FROM Members
+    WHERE email = #{email}
+  </select>
+
+  <insert id="signup" parameterType="SignupRequestDto" useGeneratedKeys="true"
+    keyProperty="memberId">
+    INSERT INTO Members (email, password, nickname)
+    VALUES (#{dto.email}, #{dto.password}, #{dto.nickname})
+  </insert>
+
+  <select id="findById" resultMap="Member_Response_Dto">
+    SELECT member_id, email, nickname
+    FROM Members
+    WHERE member_id = #{memberId}
+  </select>
+
+  <select id="findByEmail" resultMap="Login_Response_Dto">
+    SELECT member_id, email, password
+    FROM Members
+    WHERE email = #{email};
+  </select>
+
+</mapper>

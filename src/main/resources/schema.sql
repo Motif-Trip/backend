@@ -1,230 +1,203 @@
-DROP TABLE IF EXISTS `Members`;
-
-CREATE TABLE `Members`
+CREATE TABLE Members
 (
-    `member_id`   BIGINT       NOT NULL,
-    `username`    VARCHAR(20)  NOT NULL,
-    `nickname`    VARCHAR(20)  NOT NULL,
-    `email`       VARCHAR(60)  NOT NULL,
-    `password`    VARCHAR(30)  NOT NULL,
-    `profile_img` VARCHAR(255) NULL
+    member_id   bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    username    varchar(30)                          NOT NULL,
+    nickname    varchar(30)                          NOT NULL,
+    email       varchar(100)                         NOT NULL,
+    password    varchar(255)                         NOT NULL,
+    profile_img varchar(255)                         NULL,
+    is_deleted  tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at  timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT email
+        UNIQUE (email)
 );
 
-DROP TABLE IF EXISTS `Schedules`;
 
-CREATE TABLE `Schedules`
+CREATE INDEX email_2
+    ON Members (email);
+
+
+CREATE TABLE ChatRooms
 (
-    `schedule_id`  BIGINT      NOT NULL,
-    `name`         VARCHAR(20) NOT NULL,
-    `category`     VARCHAR(10) NOT NULL,
-    `x_coordinate` DOUBLE      NOT NULL,
-    `y_coordinate` DOUBLE      NOT NULL,
-    `start_time`   TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `end_time`     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `color_code`   CHAR(7)     NOT NULL DEFAULT #000000,
-                                            `table_id` BIGINT NOT NULL
+    chatroom_id    bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    chatroom_limit int                                  NOT NULL,
+    chatroom_name  varchar(20)                          NOT NULL,
+    is_deleted     tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at     timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at    timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `TimeTables`;
 
-CREATE TABLE `TimeTables`
+CREATE TABLE Chats
 (
-    `table_id`   BIGINT      NOT NULL,
-    `table_name` VARCHAR(20) NULL,
-    `date`       DATE        NOT NULL DEFAULT CURRENT_DATE,
-    `member_id`  BIGINT      NOT NULL
+    chat_id     bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    chatroom_id bigint                               NOT NULL,
+    member_id   bigint                               NOT NULL,
+    message     text                                 NOT NULL,
+    is_deleted  tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at  timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_ChatRoom_TO_Chat_1
+        FOREIGN KEY (chatroom_id) REFERENCES ChatRooms (chatroom_id)
+            ON DELETE CASCADE,
+    CONSTRAINT FK_Members_TO_Chat_1
+        FOREIGN KEY (member_id) REFERENCES Members (member_id)
+            ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS `Posts`;
 
-CREATE TABLE `Posts`
+CREATE TABLE Posts
 (
-    `post_id`   BIGINT NOT NULL,
-    `contents`  TEXT   NOT NULL,
-    `member_id` BIGINT NOT NULL
+    post_id     bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    member_id   bigint                               NOT NULL,
+    contents    text                                 NOT NULL,
+    is_deleted  tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at  timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    title       varchar(100)                         NOT NULL,
+    CONSTRAINT FK_Members_TO_Posts_1
+        FOREIGN KEY (member_id) REFERENCES Members (member_id)
+            ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS `Comments`;
 
-CREATE TABLE `Comments`
+CREATE TABLE Comments
 (
-    `comment_id` BIGINT NOT NULL,
-    `post_id`    BIGINT NOT NULL,
-    `member_id`  BIGINT NOT NULL,
-    `parents_id` BIGINT NULL,
-    `contents`   TEXT   NOT NULL
+    comment_id  bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    post_id     bigint                               NOT NULL,
+    member_id   bigint                               NOT NULL,
+    parents_id  bigint                               NULL,
+    contents    text                                 NOT NULL,
+    is_deleted  tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at  timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Comments_TO_Comments_1
+        FOREIGN KEY (parents_id) REFERENCES Comments (comment_id)
+            ON DELETE CASCADE,
+    CONSTRAINT FK_Members_TO_Comments_1
+        FOREIGN KEY (member_id) REFERENCES Members (member_id)
+            ON DELETE CASCADE,
+    CONSTRAINT FK_Posts_TO_Comments_1
+        FOREIGN KEY (post_id) REFERENCES Posts (post_id)
+            ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS `Images`;
 
-CREATE TABLE `Images`
+CREATE TABLE Images
 (
-    `image_id`      BIGINT       NOT NULL,
-    `post_id`       BIGINT       NOT NULL,
-    `original_name` VARCHAR(255) NOT NULL,
-    `stored_name`   VARCHAR(255) NOT NULL,
-    `image_url`     VARCHAR(255) NOT NULL
+    image_id      bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    post_id       bigint                               NOT NULL,
+    original_name varchar(255)                         NOT NULL,
+    stored_name   varchar(255)                         NOT NULL,
+    image_url     varchar(255)                         NOT NULL,
+    is_deleted    tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at    timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at   timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Posts_TO_Images_1
+        FOREIGN KEY (post_id) REFERENCES Posts (post_id)
+            ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS `Likes`;
 
-CREATE TABLE `Likes`
+CREATE TABLE Likes
 (
-    `like_id`   BIGINT NOT NULL,
-    `post_id`   BIGINT NOT NULL,
-    `member_id` BIGINT NOT NULL
+    like_id     bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    post_id     bigint                              NOT NULL,
+    member_id   bigint                              NOT NULL,
+    created_at  timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT idx_member_post_unique
+        UNIQUE (member_id, post_id),
+    CONSTRAINT FK_Members_TO_Likes_1
+        FOREIGN KEY (member_id) REFERENCES Members (member_id)
+            ON DELETE CASCADE,
+    CONSTRAINT FK_Posts_TO_Likes_1
+        FOREIGN KEY (post_id) REFERENCES Posts (post_id)
+            ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS `Chat`;
 
-CREATE TABLE `Chat`
+CREATE TABLE TimeTables
 (
-    `chat_id`     BIGINT    NOT NULL,
-    `message`     TEXT      NOT NULL,
-    `send_time`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `chatroom_id` BIGINT    NOT NULL,
-    `member_id`   BIGINT    NOT NULL
+    timetable_id   bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    member_id      bigint                               NOT NULL,
+    timetable_name varchar(30)                          NOT NULL,
+    schedule_date  timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    is_deleted     tinyint(1) DEFAULT 0                 NOT NULL,
+    created_at     timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at    timestamp  DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Members_TO_TimeTables_1
+        FOREIGN KEY (member_id) REFERENCES Members (member_id)
+            ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS `ChatRoom`;
 
-CREATE TABLE `ChatRoom`
+CREATE TABLE Schedules
 (
-    `chatroom_id`    BIGINT      NOT NULL,
-    `chatroom_limit` INT         NOT NULL,
-    `chatroom_name`  VARCHAR(20) NULL DEFAULT 채팅방 + 채팅방ID
+    schedule_id  bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    timetable_id bigint                              NOT NULL,
+    name         varchar(20)                         NOT NULL,
+    category     varchar(10)                         NOT NULL,
+    latitude     double                              NOT NULL,
+    longitude    double                              NOT NULL,
+    start_time   timestamp                           NOT NULL,
+    end_time     timestamp                           NOT NULL,
+    color_code   char(7)   DEFAULT '#000000'         NOT NULL,
+    created_at   timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at  timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT FK_TimeTables_TO_Schedules_1
+        FOREIGN KEY (timetable_id) REFERENCES TimeTables (timetable_id)
+            ON DELETE CASCADE
 );
 
-ALTER TABLE `Members`
-    ADD CONSTRAINT `PK_MEMBERS` PRIMARY KEY (
-                                             `member_id`
-        );
 
-ALTER TABLE `Schedules`
-    ADD CONSTRAINT `PK_SCHEDULES` PRIMARY KEY (
-                                               `schedule_id`
-        );
+CREATE TABLE RefreshTokens
+(
+    token_id      bigint AUTO_INCREMENT
+        PRIMARY KEY,
+    token_value   varchar(255)                          NOT NULL,
+    email         varchar(100)                          NOT NULL,
+    status        varchar(20) DEFAULT 'active'          NOT NULL,
+    expiration_at timestamp                             NOT NULL,
+    created_at    timestamp   DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    modified_at   timestamp   DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT email
+        UNIQUE (email),
+    CONSTRAINT FK_Members_TO_RefreshTokens_1
+        FOREIGN KEY (email) REFERENCES Members (email)
+            ON DELETE CASCADE
+);
 
-ALTER TABLE `TimeTables`
-    ADD CONSTRAINT `PK_TIMETABLES` PRIMARY KEY (
-                                                `table_id`
-        );
 
-ALTER TABLE `Posts`
-    ADD CONSTRAINT `PK_POSTS` PRIMARY KEY (
-                                           `post_id`
-        );
+DROP TABLE IF EXISTS `ProfileImages`;
+CREATE TABLE `ProfileImages`
+(
+    `profile_image_id` BIGINT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `member_id`        BIGINT       NOT NULL,
+    `original_name`    VARCHAR(255) NOT NULL,
+    `stored_name`      VARCHAR(255) NOT NULL,
+    `image_url`        VARCHAR(255) NOT NULL,
+    is_deleted         tinyint(1)   NOT NULL DEFAULT 0,
+    `created_at`       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified_at`      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES `Members` (member_id)
+);
 
-ALTER TABLE `Comments`
-    ADD CONSTRAINT `PK_COMMENTS` PRIMARY KEY (
-                                              `comment_id`
-        );
+ALTER TABLE TimeTables
+    ADD COLUMN email VARCHAR(255);
 
-ALTER TABLE `Images`
-    ADD CONSTRAINT `PK_IMAGES` PRIMARY KEY (
-                                            `image_id`
-        );
-
-ALTER TABLE `Likes`
-    ADD CONSTRAINT `PK_LIKES` PRIMARY KEY (
-                                           `like_id`
-        );
-
-ALTER TABLE `Chat`
-    ADD CONSTRAINT `PK_CHAT` PRIMARY KEY (
-                                          `chat_id`
-        );
-
-ALTER TABLE `ChatRoom`
-    ADD CONSTRAINT `PK_CHATROOM` PRIMARY KEY (
-                                              `chatroom_id`
-        );
-
-ALTER TABLE `Schedules`
-    ADD CONSTRAINT `FK_TimeTables_TO_Schedules_1` FOREIGN KEY (
-                                                               `table_id`
-        )
-        REFERENCES `TimeTables` (
-                                 `table_id`
-            );
-
-ALTER TABLE `TimeTables`
-    ADD CONSTRAINT `FK_Members_TO_TimeTables_1` FOREIGN KEY (
-                                                             `member_id`
-        )
-        REFERENCES `Members` (
-                              `member_id`
-            );
-
-ALTER TABLE `Posts`
-    ADD CONSTRAINT `FK_Members_TO_Posts_1` FOREIGN KEY (
-                                                        `member_id`
-        )
-        REFERENCES `Members` (
-                              `member_id`
-            );
-
-ALTER TABLE `Comments`
-    ADD CONSTRAINT `FK_Posts_TO_Comments_1` FOREIGN KEY (
-                                                         `post_id`
-        )
-        REFERENCES `Posts` (
-                            `post_id`
-            );
-
-ALTER TABLE `Comments`
-    ADD CONSTRAINT `FK_Members_TO_Comments_1` FOREIGN KEY (
-                                                           `member_id`
-        )
-        REFERENCES `Members` (
-                              `member_id`
-            );
-
-ALTER TABLE `Comments`
-    ADD CONSTRAINT `FK_Comments_TO_Comments_1` FOREIGN KEY (
-                                                            `parents_id`
-        )
-        REFERENCES `Comments` (
-                               `comment_id`
-            );
-
-ALTER TABLE `Images`
-    ADD CONSTRAINT `FK_Posts_TO_Images_1` FOREIGN KEY (
-                                                       `post_id`
-        )
-        REFERENCES `Posts` (
-                            `post_id`
-            );
-
-ALTER TABLE `Likes`
-    ADD CONSTRAINT `FK_Posts_TO_Likes_1` FOREIGN KEY (
-                                                      `post_id`
-        )
-        REFERENCES `Posts` (
-                            `post_id`
-            );
-
-ALTER TABLE `Likes`
-    ADD CONSTRAINT `FK_Members_TO_Likes_1` FOREIGN KEY (
-                                                        `member_id`
-        )
-        REFERENCES `Members` (
-                              `member_id`
-            );
-
-ALTER TABLE `Chat`
-    ADD CONSTRAINT `FK_ChatRoom_TO_Chat_1` FOREIGN KEY (
-                                                        `chatroom_id`
-        )
-        REFERENCES `ChatRoom` (
-                               `chatroom_id`
-            );
-
-ALTER TABLE `Chat`
-    ADD CONSTRAINT `FK_Members_TO_Chat_1` FOREIGN KEY (
-                                                       `member_id`
-        )
-        REFERENCES `Members` (
-                              `member_id`
-            );
+ALTER TABLE TimeTables
+    ADD CONSTRAINT fk_member_email
+        FOREIGN KEY (email)
+            REFERENCES Members(email);
 

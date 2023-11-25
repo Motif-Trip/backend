@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.motif.app.domain.mapper.PostMapper">
+  <resultMap type="PostCreateRequestDto" id="requestDto">
+    <result column="post_id" property="postId"/>
+    <result column="contents" property="contents"/>
+    <result column="member_id" property="memberId"/>
+  </resultMap>
+
+  <resultMap type="PostResponseDto" id="post_response">
+    <result column="post_id" property="postId"/>
+    <result column="contents" property="contents"/>
+    <result column="nickname" property="nickname"/>
+    <result column="like_count" property="likeCnt"/>
+    <result column="member_id" property="memberId"/>
+    <result column="created_at" property="createdAt"/>
+    <result column="is_liked" property="isLiked"/>
+  </resultMap>
+
+  <insert id="save" useGeneratedKeys="true" keyProperty="dto.postId">
+    INSERT INTO Posts(title, contents, member_id)
+    VALUES (#{dto.title}, #{dto.contents}, #{memberId})
+  </insert>
+
+  <select id="fetchPostList" resultMap="post_response">
+    SELECT p.post_id,
+           p.member_id,
+           p.contents,
+           p.created_at,
+           m.nickname,
+           COALESCE(l.like_count, 0)                                 AS like_count,
+           CASE WHEN ul.post_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_liked
+    FROM Posts p
+           LEFT JOIN Members m ON p.member_id = m.member_id
+           LEFT JOIN (SELECT post_id, COUNT(*) AS like_count
+                      FROM Likes
+                      GROUP BY post_id) l ON p.post_id = l.post_id
+           LEFT JOIN Likes ul ON ul.post_id = p.post_id AND ul.member_id =
+                                                            (SELECT member_id FROM Members WHERE email = #{email})
+    ORDER BY p.created_at DESC
+      LIMIT #{request.skip}, #{request.size}
+  </select>
+
+
+  <select id="postSelect" parameterType="Long" resultMap="requestDto">
+    SELECT post_id, contents, member_id
+    FROM Posts
+    WHERE post_id = #{postId}
+  </select>
+
+  <update id="postModify" parameterType="PostCreateRequestDto">
+    UPDATE Posts
+    SET contents=#{contents}
+    WHERE post_id = #{postId}
+  </update>
+
+  <delete id="postDelete" parameterType="Long">
+    DELETE
+    FROM Posts
+    WHERE post_id = #{postId}
+  </delete>
+</mapper>
