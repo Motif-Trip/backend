@@ -4,6 +4,7 @@ import com.ssafy.motif.app.code.ApiResponse;
 import com.ssafy.motif.app.code.ErrorCode;
 import com.ssafy.motif.app.exception.EndTimeBeforeStartTimeException;
 import com.ssafy.motif.app.exception.NotFoundTimetableException;
+import com.ssafy.motif.app.exception.ScheduleOverlapException;
 import com.ssafy.motif.app.exception.TimetableDeduplicationException;
 import com.ssafy.motif.app.exception.member.EmailDuplicateException;
 import com.ssafy.motif.app.exception.member.NotFoundMemberException;
@@ -67,8 +68,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EndTimeBeforeStartTimeException.class)
-    public ResponseEntity<?> EndTimeBeforeStartTimeExceptionHandler(EndTimeBeforeStartTimeException e) {
+    public ResponseEntity<?> EndTimeBeforeStartTimeExceptionHandler(
+        EndTimeBeforeStartTimeException e) {
         log.error("EndTimeBeforeStartTimeException : {}", e.getErrorCode().getMessage());
         return apiResponse.error(e.getErrorCode().getMessage());
     }
+
+    @ExceptionHandler(ScheduleOverlapException.class)
+    public ResponseEntity<?> ScheduleOverlapExceptionHandler(ScheduleOverlapException e) {
+        log.error("ScheduleOverlapException : {}", e.getErrorCode().getMessage());
+        return apiResponse.error(e.getErrorCode().getMessage());
+    }
+
 }
