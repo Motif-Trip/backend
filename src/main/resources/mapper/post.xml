@@ -9,11 +9,14 @@
     <result column="member_id" property="memberId"/>
   </resultMap>
 
-  <resultMap type="PagingResponse" id="paging">
+  <resultMap type="PostResponseDto" id="post_response">
     <result column="post_id" property="postId"/>
     <result column="contents" property="contents"/>
+    <result column="nickname" property="nickname"/>
+    <result column="like_count" property="likeCnt"/>
     <result column="member_id" property="memberId"/>
     <result column="created_at" property="createdAt"/>
+    <result column="is_liked" property="isLiked"/>
   </resultMap>
 
   <insert id="save" useGeneratedKeys="true" keyProperty="dto.postId">
@@ -21,12 +24,25 @@
     VALUES (#{dto.title}, #{dto.contents}, #{memberId})
   </insert>
 
-  <select id="postPaging" parameterType="PageRequest" resultMap="paging">
-    SELECT post_id, contents, member_id, created_at
-    FROM Posts
-    ORDER BY created_at DESC
-    LIMIT #{skip}, #{size}
+  <select id="fetchPostList" resultMap="post_response">
+    SELECT p.post_id,
+           p.member_id,
+           p.contents,
+           p.created_at,
+           m.nickname,
+           COALESCE(l.like_count, 0)                                 AS like_count,
+           CASE WHEN ul.post_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_liked
+    FROM Posts p
+           LEFT JOIN Members m ON p.member_id = m.member_id
+           LEFT JOIN (SELECT post_id, COUNT(*) AS like_count
+                      FROM Likes
+                      GROUP BY post_id) l ON p.post_id = l.post_id
+           LEFT JOIN Likes ul ON ul.post_id = p.post_id AND ul.member_id =
+                                                            (SELECT member_id FROM Members WHERE email = #{email})
+    ORDER BY p.created_at DESC
+      LIMIT #{request.skip}, #{request.size}
   </select>
+
 
   <select id="postSelect" parameterType="Long" resultMap="requestDto">
     SELECT post_id, contents, member_id
