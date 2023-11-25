@@ -25,7 +25,6 @@ class MemberMapperTest {
         SignupRequestDto requestDto = new SignupRequestDto();
         requestDto.setEmail("test@test.com");
         requestDto.setPassword("123123");
-        requestDto.setUsername("홍길동");
         requestDto.setNickname("HongGilDong");
 
         // when
@@ -43,7 +42,6 @@ class MemberMapperTest {
         SignupRequestDto requestDto = new SignupRequestDto();
         requestDto.setEmail("test@test.com");
         requestDto.setPassword("123123");
-        requestDto.setUsername("홍길동");
         requestDto.setNickname("HongGilDong");
 
         // when
@@ -60,7 +58,6 @@ class MemberMapperTest {
         SignupRequestDto requestDto = new SignupRequestDto();
         requestDto.setEmail("test@test.com");
         requestDto.setPassword("123123");
-        requestDto.setUsername("홍길동");
         requestDto.setNickname("HongGilDong");
 
         // when

@@ -47,7 +47,6 @@ class MemberControllerTest {
         dummyMember = SignupRequestDto.builder()
             .email("motif@naver.com")
             .password(encoder.encode("123123"))
-            .username("모티브")
             .nickname("Motif")
             .build();
         mapper.signup(dummyMember);
@@ -62,7 +61,6 @@ class MemberControllerTest {
         SignupRequestDto requestDto = new SignupRequestDto();
         requestDto.setEmail("test@test.com");
         requestDto.setPassword("123123");
-        requestDto.setUsername("홍길동");
         requestDto.setNickname("HongGilDong");
 
         String data = om.writeValueAsString(requestDto);

@@ -1,7 +1,6 @@
 package com.ssafy.motif.app.domain.mapper;
 
 import com.ssafy.motif.app.domain.dto.timetable.TimetableCreateRequestDto;
-import java.time.LocalDateTime;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,8 +13,7 @@ public interface TimetableMapper {
     );
 
     Long getTimetableId(
-        @Param("memberId") Long memberId,
-        @Param("dateTime") LocalDateTime dateTime
+        @Param("memberId") Long memberId
     );
 
     Long getTimetableIdByEmail(

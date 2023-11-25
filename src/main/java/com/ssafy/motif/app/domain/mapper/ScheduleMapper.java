@@ -2,6 +2,7 @@ package com.ssafy.motif.app.domain.mapper;
 
 import com.ssafy.motif.app.domain.dto.schedule.ScheduleCreateRequestDto;
 import com.ssafy.motif.app.domain.dto.schedule.ScheduleResponseDto;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,15 @@ public interface ScheduleMapper {
         @Param("timetableId") Long timetableId
     );
 
+
+    /**
+     * @param timetableId : 테이블 ID
+     * @param startTime   : 시작 시간 스케쥴
+     * @param endTime     : 종료 시간 스케쥴
+     * @return            : 갯수
+     */
+    int checkForOverlappingSchedules(
+        @Param("timetableId") Long timetableId,
+        @Param("startTime") LocalDateTime startTime,
+        @Param("endTime") LocalDateTime endTime);
 }

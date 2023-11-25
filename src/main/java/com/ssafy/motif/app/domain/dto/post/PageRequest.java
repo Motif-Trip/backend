@@ -6,14 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PageRequest { // 페이징 요청을 위한 Dto
-	private int pageId;
-	private int size;
-	
-	public int getSkip() {
-		return (pageId-1)*size;
-	}
+
+    private int page;
+    private int size;
+
+    public int getSkip() {
+        return (page - 1) * size;
+    }
 
 }

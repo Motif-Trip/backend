@@ -22,7 +22,7 @@ public class DataController {
     @Value("${data.url}")
     private String url;
 
-    @GetMapping
+    @GetMapping(produces = "application/json;charset=UTF-8")
     public String getData(@RequestParam String query, @RequestParam String cond) throws Exception {
         return requestData(formatUrl(query, cond));
     }
