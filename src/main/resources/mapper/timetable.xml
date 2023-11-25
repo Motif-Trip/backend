@@ -6,23 +6,20 @@
 
   <insert id="save" useGeneratedKeys="true" keyProperty="dto.timetableId">
     INSERT INTO TimeTables(member_id, timetable_name, schedule_date)
-    VALUES (#{memberId}, #{dto.tableName}, #{dto.dateTime})
+    VALUES (#{memberId}, #{dto.tableName}, CURRENT_DATE)
   </insert>
 
   <select id="getTimetableId" resultType="long">
     SELECT timetable_id
     FROM TimeTables
-    WHERE member_id = #{memberId}
-      AND DATE (schedule_date) =
-      CASE WHEN #{dateTime} IS NOT NULL THEN DATE (#{dateTime})
-      ELSE CURRENT_DATE
-    END
+    WHERE member_id = #{memberId} AND schedule_date = CURRENT_DATE
   </select>
 
   <select id="getTimetableIdByEmail" resultType="long">
     SELECT timetable_id
     FROM TimeTables
-    WHERE email = #{email} AND DATE (schedule_date) = CURRENT_DATE
+    WHERE member_id = (SELECT member_id FROM Members WHERE email = #{email})
+      AND schedule_date = CURRENT_DATE
   </select>
 
 </mapper>
