@@ -27,7 +27,6 @@ class MemberServiceTest {
         SignupRequestDto requestDto = new SignupRequestDto();
         requestDto.setEmail("test@test.com");
         requestDto.setPassword("123123");
-        requestDto.setUsername("홍길동");
         requestDto.setNickname("HongGilDong");
 
         // when
@@ -44,13 +43,11 @@ class MemberServiceTest {
         SignupRequestDto requestDto = new SignupRequestDto();
         requestDto.setEmail("test@test.com");
         requestDto.setPassword("123123");
-        requestDto.setUsername("홍길동");
         requestDto.setNickname("HongGilDong");
 
         SignupRequestDto requestDto2 = new SignupRequestDto();
         requestDto2.setEmail("test@test.com");
         requestDto2.setPassword("123123");
-        requestDto2.setUsername("홍길동2");
         requestDto2.setNickname("HongGilDong2");
 
         // when
