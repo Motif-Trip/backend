@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -37,14 +38,15 @@ public class PostController {
     ) {
         log.info("포스트 생성 : {}", requestDto);
         postService.create(requestDto, authentication.getName());
-        return apiResponse.success(ResponseCode.POST_CREATE_SUCCESS.getMessage(), requestDto);
+        return apiResponse.success(ResponseCode.POST_CREATE_OK.getMessage(), requestDto);
     }
 
-
-    @GetMapping("/paging/{pageId}")
-    public ResponseEntity<?> postPaging(@PathVariable int pageId) {
-        int size = 20; // 페이징 사이즈
-        return ResponseEntity.ok(postService.postPaging(pageId, size));
+    @GetMapping
+    public ResponseEntity<?> list(
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @ApiIgnore Authentication authentication) {
+        return apiResponse.success(ResponseCode.POST_FETCH_LIST_OK.getMessage(),
+            postService.getList(page, authentication.getName()));
     }
 
     @GetMapping("/select/{postId}")
