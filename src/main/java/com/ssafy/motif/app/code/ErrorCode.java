@@ -24,10 +24,11 @@ public enum ErrorCode {
 
     /* Schedule 관련 예외 */
     INVALID_SCHEDULE_TIMING(HttpStatus.BAD_REQUEST, "종료 시간은 시작 시간 이후여야 합니다."),
+    SCHEDULE_TIME_OVERLAP(HttpStatus.BAD_REQUEST, "기존 스케쥴과 시간이 겹치고 있습니다."),
 
     /* TimeTable 관련 예외 */
     TIMETABLE_DUPLICATE(HttpStatus.BAD_REQUEST, "동일한 타임테이블이 이미 존재합니다."),
-    TIMETABLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 타임테이블을 찾을 수 없습니다.");
+    TIMETABLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "타임테이블을 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;
