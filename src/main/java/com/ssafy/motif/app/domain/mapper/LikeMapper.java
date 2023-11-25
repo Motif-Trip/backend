@@ -1,10 +1,16 @@
 package com.ssafy.motif.app.domain.mapper;
 
-import com.ssafy.motif.app.domain.dto.like.Like;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface LikeMapper {
-	void like(Like like);
-	Long isLiked(Like like);
-	void unlike(Long likeId);
-	int likeCount(Long postId);
+
+    void unlike(@Param("likeId") Long likeId);
+
+    int likeCount(@Param("postId") Long postId);
+
+    Long isLiked(@Param("postId") Long postId, @Param("email") String email);
+
+    void like(@Param("postId") Long postId, @Param("email") String email);
 }
