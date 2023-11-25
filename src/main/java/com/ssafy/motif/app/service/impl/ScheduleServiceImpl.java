@@ -5,6 +5,7 @@ import com.ssafy.motif.app.domain.dto.schedule.ScheduleCreateRequestDto;
 import com.ssafy.motif.app.domain.mapper.ScheduleMapper;
 import com.ssafy.motif.app.domain.mapper.TimetableMapper;
 import com.ssafy.motif.app.exception.NotFoundTimetableException;
+import com.ssafy.motif.app.exception.ScheduleOverlapException;
 import com.ssafy.motif.app.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final TimetableMapper timetableMapper;
-    private final ScheduleMapper mapper;
+    private final ScheduleMapper scheduleMapper;
 
     @Override
     public Long create(ScheduleCreateRequestDto requestDto, String loggedInEmail) {
@@ -28,8 +29,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new NotFoundTimetableException(ErrorCode.TIMETABLE_NOT_FOUND);
         }
 
+        /* 시간이 겹치는 일정이 있는지? */
+        if (scheduleMapper.checkForOverlappingSchedules(timetableId, requestDto.getStartTime(),
+            requestDto.getEndTime()) > 0) {
+            throw new ScheduleOverlapException(ErrorCode.SCHEDULE_TIME_OVERLAP);
+        }
+
         /* 타임테이블 저장 */
-        mapper.save(timetableId, requestDto, loggedInEmail);
+        scheduleMapper.save(timetableId, requestDto, loggedInEmail);
         return requestDto.getScheduleId();
     }
 }
