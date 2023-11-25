@@ -35,5 +35,17 @@
            color_code
     FROM Schedules
     WHERE timetable_id = #{timetableId}
+    ORDER BY start_time
   </select>
+
+  <select id="checkForOverlappingSchedules" resultType="int">
+    SELECT COUNT(*)
+    FROM Schedules
+    WHERE timetable_id = #{timetableId}
+      AND NOT (
+        (start_time &gt;= #{endTime}) OR (end_time &lt;= #{startTime})
+      )
+  </select>
+
+
 </mapper>
