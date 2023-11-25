@@ -19,6 +19,7 @@ public enum ResponseCode {
 
     /* 게시물(Posts) */
     POST_CREATE_OK(HttpStatus.OK, "게시물 생성 성공"),
+    POST_FETCH_LIST_OK(HttpStatus.OK, "게시물 조회 성공"),
 
     /* 스케쥴(Schedule) */
     SCHEDULE_CREATE_OK(HttpStatus.CREATED, "스케쥴 생성 성공");
